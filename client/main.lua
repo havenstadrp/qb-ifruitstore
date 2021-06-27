@@ -81,7 +81,7 @@ Citizen.CreateThread(function()
                             if IsControlJustPressed(0, 38) then
                                 if CurrentCops >= 0 then
                                     if Config.Locations["thermite"].isDone then 
-                                        QBCore.Functions.TriggerCallback('qb-radio:server:GetItem', function(hasItem)
+                                        QBCore.Functions.TriggerCallback('QBCore:HasItem', function(hasItem)
                                             if hasItem then
                                                 currentSpot = spot
                                                 GrabItem(currentSpot)
