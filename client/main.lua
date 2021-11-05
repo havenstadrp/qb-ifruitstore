@@ -1,4 +1,5 @@
-local isLoggedIn = false
+local QBCore = exports['qb-core']:GetCoreObject()
+
 local CurrentCops = 0
 local copsCalled = false
 
@@ -18,14 +19,14 @@ local currentSpot = 0
 local usingSafe = false
 
 Citizen.CreateThread(function()
-    while true do 
+    while true do
         Citizen.Wait(1)
-        if isLoggedIn then
+        if LocalPlayer.state.isLoggedIn then
             local pos = GetEntityCoords(PlayerPedId())
             if #(pos - vector3(Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z)) < 3.0 and not Config.Locations["thermite"].isDone then
                 DrawMarker(2, Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.25, 0.1, 255, 255, 255, 100, 0, 0, 0, 1, 0, 0, 0)
                 if #(pos - vector3(Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z)) < 1.0 then
-                    if not Config.Locations["thermite"].isDone then 
+                    if not Config.Locations["thermite"].isDone then
                         if not requiredItemsShowed then
                             requiredItems = {
                                 [1] = {name = QBCore.Shared.Items["thermite"]["name"], image = QBCore.Shared.Items["thermite"]["image"]},
@@ -53,8 +54,8 @@ end)
 Citizen.CreateThread(function()
     local inRange = false
     while true do
-        Citizen.Wait(1) 
-        if isLoggedIn then
+        Citizen.Wait(1)
+        if LocalPlayer.state.isLoggedIn then
             local pos = GetEntityCoords(PlayerPedId())
             for spot, location in pairs(Config.Locations["takeables"]) do
                 local dist = #(pos - vector3(Config.Locations["takeables"][spot].x, Config.Locations["takeables"][spot].y,Config.Locations["takeables"][spot].z))
@@ -72,7 +73,7 @@ Citizen.CreateThread(function()
                             DrawText3Ds(Config.Locations["takeables"][spot].x, Config.Locations["takeables"][spot].y,Config.Locations["takeables"][spot].z, '~g~E~w~ To grab item')
                             if IsControlJustPressed(0, 38) then
                                 if CurrentCops >= 0 then
-                                    if Config.Locations["thermite"].isDone then 
+                                    if Config.Locations["thermite"].isDone then
                                         QBCore.Functions.TriggerCallback('QBCore:HasItem', function(hasItem)
                                             if hasItem then
                                                 currentSpot = spot
@@ -155,7 +156,7 @@ function GrabItem(spot)
             local street1 = GetStreetNameFromHashKey(s1)
             local street2 = GetStreetNameFromHashKey(s2)
             local streetLabel = street1
-            if street2 ~= nil then 
+            if street2 ~= nil then
                 streetLabel = streetLabel .. " " .. street2
             end
             -- if Config.SmallBanks[closestBank]["alarm"] then
@@ -163,7 +164,6 @@ function GrabItem(spot)
                 copsCalled = true
             -- end
         end
-
 
         StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
         TriggerServerEvent('qb-ifruitstore:server:setSpotState', "isDone", true, spot)
@@ -194,13 +194,7 @@ end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    isLoggedIn = true
     TriggerServerEvent("qb-ifruitstore:server:LoadLocationList")
-end)
-
-RegisterNetEvent('QBCore:Client:OnPlayerUnload')
-AddEventHandler('QBCore:Client:OnPlayerUnload', function()
-    isLoggedIn = false
 end)
 
 RegisterNetEvent('police:SetCopCount')
@@ -298,7 +292,7 @@ AddEventHandler('qb-ifruitstore:client:PoliceAlertMessage', function(msg, coords
             TriggerEvent("chatMessage", "911-Report", "error", msg)
             robberyAlert = true
         end
-    end 
+    end
 end)
 
 RegisterNUICallback('thermiteclick', function()
@@ -383,35 +377,30 @@ end
 
 RegisterNetEvent('qb-ifruitstore:client:robberyCall')
 AddEventHandler('qb-ifruitstore:client:robberyCall', function(streetLabel, coords)
-    if PlayerJob.name == "police" then 
-        local store = "iFruitStore"
+    if PlayerJob.name == "police" then
 
-            PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-            TriggerEvent('qb-policealerts:client:AddPoliceAlert', {
-                timeOut = 10000,
-                alertTitle = "iFruitStore robbery attempt",
-                coords = {
-                    x = coords.x,
-                    y = coords.y,
-                    z = coords.z,
+        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+        TriggerEvent('qb-policealerts:client:AddPoliceAlert', {
+            timeOut = 10000,
+            alertTitle = "iFruitStore robbery attempt",
+            coords = {
+                x = coords.x,
+                y = coords.y,
+                z = coords.z,
+            },
+            details = {
+                [1] = {
+                    icon = '<i class="fas fa-university"></i>',
+                    detail = "iFruit Store",
                 },
-                details = {
-                    [1] = {
-                        icon = '<i class="fas fa-university"></i>',
-                        detail = bank,
-                    },
-                    [2] = {
-                        icon = '<i class="fas fa-video"></i>',
-                        detail = cameraId,
-                    },
-                    [3] = {
-                        icon = '<i class="fas fa-globe-europe"></i>',
-                        detail = streetLabel,
-                    },
+                [2] = {
+                    icon = '<i class="fas fa-globe-europe"></i>',
+                    detail = streetLabel,
                 },
-                callSign = QBCore.Functions.GetPlayerData().metadata["callsign"],
-            })
-        
+            },
+            callSign = QBCore.Functions.GetPlayerData().metadata["callsign"],
+        })
+
         local transG = 250
         local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
         SetBlipSprite(blip, 487)
