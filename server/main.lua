@@ -1,9 +1,9 @@
-local alarmTriggered = false
+local QBCore = exports['qb-core']:GetCoreObject()
 local certificateAmount = 43
 
 RegisterServerEvent('qb-ifruitstore:server:LoadLocationList')
 AddEventHandler('qb-ifruitstore:server:LoadLocationList', function()
-    local src = source 
+    local src = source
     TriggerClientEvent("qb-ifruitstore:server:LoadLocationList", src, Config.Locations)
 end)
 
@@ -62,17 +62,16 @@ AddEventHandler('qb-ifruitstore:server:itemReward', function(spot)
         TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.name], 'add')
     else
         TriggerClientEvent('QBCore:Notify', src, 'You have to much in your pocket ..', 'error')
-    end    
+    end
 end)
 
 RegisterServerEvent('qb-ifruitstore:server:PoliceAlertMessage')
 AddEventHandler('qb-ifruitstore:server:PoliceAlertMessage', function(msg, coords, blip)
-    local src = source
     for k, v in pairs(QBCore.Functions.GetPlayers()) do
         local Player = QBCore.Functions.GetPlayer(v)
-        if Player ~= nil then 
-            if (Player.PlayerData.job.name == "police") then  
-                TriggerClientEvent("qb-ifruitstore:client:PoliceAlertMessage", v, msg, coords, blip) 
+        if Player ~= nil then
+            if (Player.PlayerData.job.name == "police") then
+                TriggerClientEvent("qb-ifruitstore:client:PoliceAlertMessage", v, msg, coords, blip)
             end
         end
     end
@@ -80,9 +79,5 @@ end)
 
 RegisterServerEvent('qb-ifruitstore:server:callCops')
 AddEventHandler('qb-ifruitstore:server:callCops', function(streetLabel, coords)
-    local place = "iFruitStore"
-    local msg = "The Alram has been activated at the "..place.. " at " ..streetLabel
-
     TriggerClientEvent("qb-ifruitstore:client:robberyCall", -1, streetLabel, coords)
-
 end)
