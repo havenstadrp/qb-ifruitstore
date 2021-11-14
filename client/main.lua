@@ -325,35 +325,41 @@ CreateThread(function()
     end
 end)
 
-CreateThread(function()
+Citizen.CreateThread(function()
     while true do
-        Wait(1)
+        Citizen.Wait(1)
+        local inRange = false
         if LocalPlayer.state.isLoggedIn then
             local pos = GetEntityCoords(PlayerPedId())
-            if #(pos - vector3(Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z)) < 3.0 and not Config.Locations["thermite"].isDone then
-                DrawMarker(2, Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.25, 0.1, 255, 255, 255, 100, 0, 0, 0, 1, 0, 0, 0)
-                if #(pos - vector3(Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z)) < 1.0 then
-                    if not Config.Locations["thermite"].isDone then
-                        if not requiredItemsShowed then
-                            requiredItems = {
-                                [1] = {name = QBCore.Shared.Items["thermite"]["name"], image = QBCore.Shared.Items["thermite"]["image"]},
-                            }
-                            requiredItemsShowed = true
-                            TriggerEvent('inventory:client:requiredItems', requiredItems, true)
+            if #(pos - vector3(Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z)) < 10.0 then
+                inRange = true
+                if #(pos - vector3(Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z)) < 3.0 and not Config.Locations["thermite"].isDone then
+                    DrawMarker(2, Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.25, 0.1, 255, 255, 255, 100, 0, 0, 0, 1, 0, 0, 0)
+                    if #(pos - vector3(Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z)) < 1.0 then
+                        if not Config.Locations["thermite"].isDone then
+                            if not requiredItemsShowed then
+                                requiredItems = {
+                                    [1] = {name = QBCore.Shared.Items["thermite"]["name"], image = QBCore.Shared.Items["thermite"]["image"]},
+                                }
+                                requiredItemsShowed = true
+                                TriggerEvent('inventory:client:requiredItems', requiredItems, true)
+                            end
                         end
                     end
+                else
+                    if requiredItemsShowed then
+                        requiredItems = {
+                            [1] = {name = QBCore.Shared.Items["thermite"]["name"], image = QBCore.Shared.Items["thermite"]["image"]},
+                        }
+                        requiredItemsShowed = false
+                        TriggerEvent('inventory:client:requiredItems', requiredItems, false)
+                    end
                 end
-            else
-                if requiredItemsShowed then
-                    requiredItems = {
-                        [1] = {name = QBCore.Shared.Items["thermite"]["name"], image = QBCore.Shared.Items["thermite"]["image"]},
-                    }
-                    requiredItemsShowed = false
-                    TriggerEvent('inventory:client:requiredItems', requiredItems, false)
-                end
+            elseif not inRange then
+                Citizen.Wait(3000)
             end
         else
-            Wait(3000)
+            Citizen.Wait(3000)
         end
     end
 end)
