@@ -327,7 +327,7 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(1)
+        Wait(1)
         local inRange = false
         if LocalPlayer.state.isLoggedIn then
             local pos = GetEntityCoords(PlayerPedId())
@@ -356,10 +356,10 @@ Citizen.CreateThread(function()
                     end
                 end
             elseif not inRange then
-                Citizen.Wait(3000)
+                Wait(3000)
             end
         else
-            Citizen.Wait(3000)
+            Wait(3000)
         end
     end
 end)
