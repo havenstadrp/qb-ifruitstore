@@ -258,7 +258,7 @@ end)
 
 -- Use Thermite on The Security System on the roof
 RegisterNetEvent('thermite:UseThermite', function()
-    if QBCore ~= nil and isLoggedIn then
+    if QBCore ~= nil and LocalPlayer.state["isLoggedIn"] then
         local pos = GetEntityCoords(PlayerPedId())
         if #(pos - vector3(Config.Locations["thermite"].x, Config.Locations["thermite"].y, Config.Locations["thermite"].z)) < 1.0 then
             -- Check if enough cops are online
