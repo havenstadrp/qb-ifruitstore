@@ -1,5 +1,17 @@
 Config = {}
 
+-- Police required to start the heist
+Config.RequiredCops = 0
+
+-- Set Cooldown between each heist (in seconds)
+Config.Cooldown = 20
+
+-- Destroy The Security System / Thermite Minigame
+Config.CorrectBlocks = 16
+Config.IncorrectBlocks = 3
+Config.TimeToShow = 6
+Config.TimeToLose = 20
+
 Config.Locations = {
     ["main"] = {
         x = 0.0,

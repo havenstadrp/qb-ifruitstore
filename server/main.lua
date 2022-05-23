@@ -19,15 +19,6 @@ RegisterNetEvent('qb-ifruitstore:server:setSpotState', function(stateType, state
     TriggerClientEvent('qb-ifruitstore:client:setSpotState', -1, stateType, state, spot)
 end)
 
-RegisterNetEvent('qb-ifruitstore:server:SetThermiteStatus', function(stateType, state)
-    if stateType == "isBusy" then
-        Config.Locations["thermite"].isBusy = state
-    elseif stateType == "isDone" then
-        Config.Locations["thermite"].isDone = state
-    end
-    TriggerClientEvent('qb-ifruitstore:client:SetThermiteStatus', -1, stateType, state)
-end)
-
 RegisterNetEvent('qb-ifruitstore:server:SafeReward', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
@@ -76,4 +67,42 @@ end)
 
 RegisterNetEvent('qb-ifruitstore:server:callCops', function(streetLabel, coords)
     TriggerClientEvent("qb-ifruitstore:client:robberyCall", -1, streetLabel, coords)
+end)
+
+-- Register Cooldown Event
+RegisterServerEvent("qb-ifruitstore:server:BeginCooldown", function ()
+    Cooldown = true
+    local timer = Config.Cooldown
+    while timer > 0 do
+        Wait(1000)
+        timer = timer - 1000
+        if timer == 0 then
+            Cooldown = false
+        end
+    end
+end)
+
+-- Register Security Status
+RegisterServerEvent("qb-ifruitstore:server:SetSecurityStatus", function (stateType, state)
+    if stateType == "isBusy" then
+        Config.Locations["thermite"].isBusy = state
+    elseif stateType == "isDone" then
+        Config.Locations["thermite"].isDone = state
+    end
+    TriggerClientEvent("qb-ifruitstore:client:SetSecurityStatus", -1, stateType, state)
+end)
+
+-- Creating Usable Items
+QBCore.Functions.CreateUseableItem("thermite", function (source)
+    local player = QBCore.Functions.GetPlayer(source)
+    TriggerClientEvent("thermite:UseThermite", source)
+end)
+
+-- Callback For Cooldown
+QBCore.Functions.CreateCallback("qb-ifruitstore:callback:Cooldown", function (source, cb)
+    if Cooldown then
+        cb(true)
+    else
+        cb(false)
+    end
 end)
