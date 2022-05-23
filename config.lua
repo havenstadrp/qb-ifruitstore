@@ -7,10 +7,10 @@ Config.RequiredCops = 0
 Config.Cooldown = 20
 
 -- Destroy The Security System / Thermite Minigame
-Config.CorrectBlocks = 16
-Config.IncorrectBlocks = 3
-Config.TimeToShow = 6
-Config.TimeToLose = 20
+Config.CorrectBlocks = 5
+Config.IncorrectBlocks = 2
+Config.TimeToShow = 5
+Config.TimeToLose = 15
 
 Config.Locations = {
     ["main"] = {
