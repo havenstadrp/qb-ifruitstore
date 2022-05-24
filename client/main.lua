@@ -63,10 +63,10 @@ function GrabItem(spot)
                 streetLabel = streetLabel .. " " .. street2
             end
 
-            -- Start debugging
-            local chance = math.random(1,100)
-            print(chance)
-            -- Stop debugging
+            -- -- Start debugging
+            -- local chance = math.random(1,100)
+            -- print(chance)
+            -- -- Stop debugging
 
             if Config.Locations["thermite"].isDone then
                 -- 30% chance of triggering the alarm
