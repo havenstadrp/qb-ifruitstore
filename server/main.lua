@@ -63,7 +63,7 @@ AddEventHandler("qb-ifruitstore:server:PoliceAlertMessage1", function ()
         if Player ~= nil then
             if (Player.PlayerData.job.name == "police") then
                 local data = {displayCode = "10-11A", description = "iFruit Robbery", isImportant = 1,
-                    recipientList = {"police"}, length = "10000", infoM = "fas fa-mobile", info = "iFruit Store Robbery On Going..", blackSprite = 619, blipColour = 50, blipScale = 1.0}
+                    recipientList = {"police"}, length = "10000", infoM = "fas fa-mobile", info = "iFruit Store Robbery On Going..", blipSprite = 619, blipColour = 50, blipScale = 1.0}
                 local dispatchData = {dispatchData = data, caller = "Alarm", coords = vector3(Config.Locations["main"].x, Config.Locations["main"].y, Config.Locations["main"].z)}
                 TriggerEvent("wf-alerts:svNotify", dispatchData)
             end
