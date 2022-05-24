@@ -14,9 +14,9 @@ Config.TimeToLose = 15
 
 Config.Locations = {
     ["main"] = {
-        x = 0.0,
-        y = 0.0,
-        z = 0.0,
+        x = 155.0067,
+        y = -217.940,
+        z = 54.349,
     },
     ["thermite"] = {
         x = 158.1146,
