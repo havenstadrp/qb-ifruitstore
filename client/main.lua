@@ -33,7 +33,7 @@ end
 -- Alarming the police
 function AlarmThePolice(streetLabel, pos)
     TriggerServerEvent("qb-ifruitstore:server:callCops", streetLabel, pos)
-    TriggerServerEvent("qb-ifruitstore:server:PoliceAlertMessage", "People are trying to steal items at the iFruit Store", pos, true)
+    TriggerServerEvent("qb-ifruitstore:server:PoliceAlertMessage1")
     copsCalled = true
 end
 
@@ -63,10 +63,10 @@ function GrabItem(spot)
                 streetLabel = streetLabel .. " " .. street2
             end
 
-            -- -- Start debugging
-            -- local chance = math.random(1,100)
-            -- print(chance)
-            -- -- Stop debugging
+            local chance = math.random(1,100)
+            -- Start debugging
+            print(chance)
+            -- Stop debugging
 
             if Config.Locations["thermite"].isDone then
                 -- 30% chance of triggering the alarm
@@ -280,8 +280,10 @@ RegisterNetEvent('thermite:UseThermite', function()
                                 TriggerServerEvent("qb-ifruitstore:server:SetSecurityStatus", "isBusy", true)
                                 exports["memorygame"]:thermiteminigame(Config.CorrectBlocks, Config.IncorrectBlocks, Config.TimeToShow, Config.TimeToLose, function ()
                                     ThermiteSuccess()
+                                    TriggerServerEvent("qb-ifruitstore:server:PoliceAlertMessage3")
                                 end, function ()
                                     ThermiteFailed()
+                                    TriggerServerEvent("qb-ifruitstore:server:PoliceAlertMessage2")
                                 end)
                             else
                                 QBCore.Functions.Notify("You don't have the correct equipment!", "error")
@@ -350,86 +352,86 @@ RegisterNetEvent("qb-ifruitstore:client:SetSecurityStatus", function (stateType,
     end
 end)
 
-RegisterNetEvent('qb-ifruitstore:client:PoliceAlertMessage', function(msg, coords, blip)
-    if blip then
-        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-        TriggerEvent("chatMessage", "911-Report", "error", msg)
-        local transG = 100
-        local blip = AddBlipForRadius(coords.x, coords.y, coords.z, 100.0)
-        SetBlipSprite(blip, 9)
-        SetBlipColour(blip, 1)
-        SetBlipAlpha(blip, transG)
-        SetBlipAsShortRange(blip, false)
-        BeginTextCommandSetBlipName('STRING')
-        AddTextComponentString("911 - Suspicious situation in the iFruit Store")
-        EndTextCommandSetBlipName(blip)
-        while transG ~= 0 do
-            Wait(180 * 4)
-            transG = transG - 1
-            SetBlipAlpha(blip, transG)
-            if transG == 0 then
-                SetBlipSprite(blip, 2)
-                RemoveBlip(blip)
-                return
-            end
-        end
-    else
-        if not robberyAlert then
-            PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-            TriggerEvent("chatMessage", "911-Report", "error", msg)
-            robberyAlert = true
-        end
-    end
-end)
+-- RegisterNetEvent('qb-ifruitstore:client:PoliceAlertMessage', function(msg, coords, blip)
+--     if blip then
+--         PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+--         TriggerEvent("chatMessage", "911-Report", "error", msg)
+--         local transG = 100
+--         local blip = AddBlipForRadius(coords.x, coords.y, coords.z, 100.0)
+--         SetBlipSprite(blip, 9)
+--         SetBlipColour(blip, 1)
+--         SetBlipAlpha(blip, transG)
+--         SetBlipAsShortRange(blip, false)
+--         BeginTextCommandSetBlipName('STRING')
+--         AddTextComponentString("911 - Suspicious situation in the iFruit Store")
+--         EndTextCommandSetBlipName(blip)
+--         while transG ~= 0 do
+--             Wait(180 * 4)
+--             transG = transG - 1
+--             SetBlipAlpha(blip, transG)
+--             if transG == 0 then
+--                 SetBlipSprite(blip, 2)
+--                 RemoveBlip(blip)
+--                 return
+--             end
+--         end
+--     else
+--         if not robberyAlert then
+--             PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+--             TriggerEvent("chatMessage", "911-Report", "error", msg)
+--             robberyAlert = true
+--         end
+--     end
+-- end)
 
-RegisterNetEvent('qb-ifruitstore:client:robberyCall', function(streetLabel, coords)
-    if PlayerJob.name == "police" then
+-- RegisterNetEvent('qb-ifruitstore:client:robberyCall', function(streetLabel, coords)
+--     if PlayerJob.name == "police" then
 
-        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-        TriggerEvent('qb-policealerts:client:AddPoliceAlert', {
-            timeOut = 10000,
-            alertTitle = "iFruitStore robbery attempt",
-            coords = {
-                x = coords.x,
-                y = coords.y,
-                z = coords.z,
-            },
-            details = {
-                [1] = {
-                    icon = '<i class="fas fa-university"></i>',
-                    detail = "iFruit Store",
-                },
-                [2] = {
-                    icon = '<i class="fas fa-globe-europe"></i>',
-                    detail = streetLabel,
-                },
-            },
-            callSign = QBCore.Functions.GetPlayerData().metadata["callsign"],
-        })
+--         PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+--         TriggerEvent('qb-policealerts:client:AddPoliceAlert', {
+--             timeOut = 10000,
+--             alertTitle = "iFruitStore robbery attempt",
+--             coords = {
+--                 x = coords.x,
+--                 y = coords.y,
+--                 z = coords.z,
+--             },
+--             details = {
+--                 [1] = {
+--                     icon = '<i class="fas fa-university"></i>',
+--                     detail = "iFruit Store",
+--                 },
+--                 [2] = {
+--                     icon = '<i class="fas fa-globe-europe"></i>',
+--                     detail = streetLabel,
+--                 },
+--             },
+--             callSign = QBCore.Functions.GetPlayerData().metadata["callsign"],
+--         })
 
-        local transG = 250
-        local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
-        SetBlipSprite(blip, 487)
-        SetBlipColour(blip, 4)
-        SetBlipDisplay(blip, 4)
-        SetBlipAlpha(blip, transG)
-        SetBlipScale(blip, 1.2)
-        SetBlipFlashes(blip, true)
-        BeginTextCommandSetBlipName('STRING')
-        AddTextComponentString("10-90: iFruitStore Robbery")
-        EndTextCommandSetBlipName(blip)
-        while transG ~= 0 do
-            Wait(180 * 4)
-            transG = transG - 1
-            SetBlipAlpha(blip, transG)
-            if transG == 0 then
-                SetBlipSprite(blip, 2)
-                RemoveBlip(blip)
-                return
-            end
-        end
-    end
-end)
+--         local transG = 250
+--         local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+--         SetBlipSprite(blip, 487)
+--         SetBlipColour(blip, 4)
+--         SetBlipDisplay(blip, 4)
+--         SetBlipAlpha(blip, transG)
+--         SetBlipScale(blip, 1.2)
+--         SetBlipFlashes(blip, true)
+--         BeginTextCommandSetBlipName('STRING')
+--         AddTextComponentString("10-90: iFruitStore Robbery")
+--         EndTextCommandSetBlipName(blip)
+--         while transG ~= 0 do
+--             Wait(180 * 4)
+--             transG = transG - 1
+--             SetBlipAlpha(blip, transG)
+--             if transG == 0 then
+--                 SetBlipSprite(blip, 2)
+--                 RemoveBlip(blip)
+--                 return
+--             end
+--         end
+--     end
+-- end)
 
 -- Thread
 
