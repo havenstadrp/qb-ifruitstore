@@ -80,7 +80,7 @@ AddEventHandler("qb-ifruitstore:server:PoliceAlertMessage2", function ()
             if (Player.PlayerData.job.name == "police") then
                 local data = {displayCode = "10-11B", description = "Power Box Tampering", isImportant = 0,
                     recipientList = {"police"}, length = "5000", infoM = "fas fa-bolt", info = "Someone is tamptering with the iFruit Store Power Box..", blipSprite = 769, blipColour = 66, blipScale = 0.7}
-                local dispatchData = {dispatchData = data, caller = "Local", coords = vector3(363.29, 74.26, 97.97)}
+                local dispatchData = {dispatchData = data, caller = "Local", coords = vector3(Config.Locations["main"].x, Config.Locations["main"].y, Config.Locations["main"].z)}
                 TriggerEvent("wf-alerts:svNotify", dispatchData)
             end
         end
@@ -96,7 +96,7 @@ AddEventHandler("qb-ifruitstore:server:PoliceAlertMessage3", function ()
             if (Player.PlayerData.job.name == "police") then
                 local data = {displayCode = "10-11C", description = "Power Cut", isImportant = 0,
                     recipientList = {"police"}, length = "5000", infoM = "fas fa-bolt", info = "The power has gone out unexpectedly at the iFruit Store", blipSprite = 769, blipColour = 66, blipScale = 0.4}
-                local dispatchData = {dispatchData = data, caller = "Alarm", coords = vector3(370.82, 104.09, 103.13)}
+                local dispatchData = {dispatchData = data, caller = "Alarm", coords = vector3(Config.Locations["main"].x, Config.Locations["main"].y, Config.Locations["main"].z)}
                 TriggerEvent("wf-alerts:svNotify", dispatchData)
             end
         end
