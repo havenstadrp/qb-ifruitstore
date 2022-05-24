@@ -67,10 +67,10 @@ function GrabItem(spot)
             local chance = math.random(1,100)
             print(chance)
             -- Stop debugging
-            
+
             if Config.Locations["thermite"].isDone then
                 -- 30% chance of triggering the alarm
-                if math.random(1, 100) <= 30 then
+                if chance <= 30 then
                     AlarmThePolice(streetLabel, pos)
                 end
             else
