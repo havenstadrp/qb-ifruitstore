@@ -58,7 +58,7 @@ end)
 RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage1")
 AddEventHandler("qb-ifruitstore:server:PoliceAlertMessage1", function ()
     local src = source
-    for k, v in pairs(QBCore.Functions.GetPlayer()) do
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
         local Player = QBCore.Functions.GetPlayer(v)
         if Player ~= nil then
             if (Player.PlayerData.job.name == "police") then
@@ -74,7 +74,7 @@ end)
 RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage2")
 AddEventHandler("qb-ifruitstore:server:PoliceAlertMessage2", function ()
     local src = source
-    for k, v in pairs(QBCore.Functions.GetPlayer()) do
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
         local Player = QBCore.Functions.GetPlayer(v)
         if Player ~= nil then
             if (Player.PlayerData.job.name == "police") then
@@ -90,7 +90,7 @@ end)
 RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage3")
 AddEventHandler("qb-ifruitstore:server:PoliceAlertMessage3", function ()
     local src = source
-    for k, v in pairs(QBCore.Functions.GetPlayer()) do
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
         local Player = QBCore.Functions.GetPlayer(v)
         if Player ~= nil then
             if (Player.PlayerData.job.name == "police") then
