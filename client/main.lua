@@ -200,6 +200,11 @@ function ThermiteFailed()
     QBCore.Functions.Notify("You failed to hack the security system!", "error")
     TriggerServerEvent("QBCore:Server:RemoveItem", "thermite", 1)
     TriggerServerEvent("qb-ifruitstore:server:SetSecurityStatus", "isBusy", false)
+
+    PlaySound(-1, "Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds", 0, 0, 1)
+    local coords = GetEntityCoords(PlayerPedId())
+    local randTime = math.random(10000,15000)
+    CreateFire(coords, randTime)
 end
 
 -- NUI
