@@ -1,6 +1,7 @@
 -- Variables
 
 local QBCore = exports['qb-core']:GetCoreObject()
+local currentFires = {}
 local CurrentCops = 0
 local copsCalled = false
 local requiredItemsShowed = false
@@ -265,6 +266,27 @@ end)
 
 RegisterNetEvent('qb-ifruitstore:client:LoadList', function(list)
     Config.Locations = list
+end)
+
+-- Start fire animation for Thermite usage
+RegisterNetEvent("qb-ifruitstore:client:StartThermiteFire", function (coords, maxChildren, isGasFire)
+    if #(vector3(coords.x, coords.y, coords.z) - GetEntityCoords(PlayerPedId())) < 100 then
+        local pos = {
+            x = coords.x,
+            y = coords.y,
+            z = coords.z
+        }
+        pos.z = pos.z - 0.9
+        local fire = StartScriptFire(pos.x, pos.y, pos.z, maxChildren, isGasFire)
+        currentFires[#currentFires+1] = fire
+    end
+end)
+
+-- Stop fire animation
+RegisterNetEvent("qb-ifruitstore:client:StopThermiteFire", function ()
+    for _, v in ipairs(currentFires) do
+        RemoveScriptFire(v)
+    end
 end)
 
 -- Use Thermite on The Security System on the roof
