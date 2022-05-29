@@ -178,10 +178,10 @@ end
 
 function CreateFire(coords, time)
     for i = 1, math.random(1, 7), 1 do
-        TriggerServerEvent("thermite:StartServerFire", coords, 24, false)
+        TriggerServerEvent("qb-ifruitstore:server:StartThermiteFire", coords, 24, false)
     end
     Wait(time)
-    TriggerServerEvent("thermite:StopFires")
+    TriggerServerEvent("qb-ifruitstore:server:StopThermiteFire")
 end
 
 -- Hack Security Successfully
