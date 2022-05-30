@@ -51,8 +51,8 @@ function GrabItem(spot)
         disableMouse = false,
         disableCombat = true,
     }, {
-        animDict = "anim@gangops@facility@servers@",
-        anim = "hotwire",
+        animDict = "anim@amb@clubhouse@tutorial@bkr_tut_ig3@",
+        anim = "machinic_loop_mechandplayer",
         flags = 16,
     }, {}, {}, function ()
         if not copsCalled then
@@ -81,12 +81,12 @@ function GrabItem(spot)
                 end
             end
         end
-        StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
+        StopAnimTask(PlayerPedId(), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
         TriggerServerEvent("qb-ifruitstore:server:setSpotState", "isDone", true, spot)
         TriggerServerEvent("qb-ifruitstore:server:setSpotState", "isBusy", false, spot)
         TriggerServerEvent("qb-ifruitstore:server:itemReward", spot)
     end, function ()
-        StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
+        StopAnimTask(PlayerPedId(), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
         TriggerServerEvent("qb-ifruitstore:server:setSpotState", "isBusy", false, spot)
         QBCore.Functions.Notify("Canceled..", "error")
     end)
