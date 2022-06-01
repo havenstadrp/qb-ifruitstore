@@ -19,9 +19,9 @@ Config.Locations = {
         z = 54.349,
     },
     ["thermite"] = {
-        x = 158.1146,
-        y = -224.541,
-        z = 59.675,
+        x = 157.82,
+        y = -225.63,
+        z = 59.67,
         isDone = false,
         isBusy = false,
     },

@@ -1,6 +1,7 @@
 -- Variables
 
 local QBCore = exports['qb-core']:GetCoreObject()
+local currentFires = {}
 local CurrentCops = 0
 local copsCalled = false
 local requiredItemsShowed = false
@@ -50,8 +51,8 @@ function GrabItem(spot)
         disableMouse = false,
         disableCombat = true,
     }, {
-        animDict = "anim@gangops@facility@servers@",
-        anim = "hotwire",
+        animDict = "anim@amb@clubhouse@tutorial@bkr_tut_ig3@",
+        anim = "machinic_loop_mechandplayer",
         flags = 16,
     }, {}, {}, function ()
         if not copsCalled then
@@ -80,12 +81,12 @@ function GrabItem(spot)
                 end
             end
         end
-        StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
+        StopAnimTask(PlayerPedId(), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
         TriggerServerEvent("qb-ifruitstore:server:setSpotState", "isDone", true, spot)
         TriggerServerEvent("qb-ifruitstore:server:setSpotState", "isBusy", false, spot)
         TriggerServerEvent("qb-ifruitstore:server:itemReward", spot)
     end, function ()
-        StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
+        StopAnimTask(PlayerPedId(), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
         TriggerServerEvent("qb-ifruitstore:server:setSpotState", "isBusy", false, spot)
         QBCore.Functions.Notify("Canceled..", "error")
     end)
@@ -175,12 +176,57 @@ function takeAnim()
     TaskPlayAnim(ped, "amb@prop_human_bum_bin@idle_b", "exit", 8.0, 8.0, -1, 50, 0, false, false, false)
 end
 
+function ThermiteAnimation()
+    RequestAnimDict("anim@heists@ornate_bank@thermal_charge")
+    RequestModel("hei_p_m_bag_var22_arm_s")
+    RequestNamedPtfxAsset("scr_ornate_heist")
+    while not HasAnimDictLoaded("anim@heists@ornate_bank@thermal_charge") and not HasModelLoaded("hei_p_m_bag_var22_arm_s") and not HasNamedPtfxAssetLoaded("scr_ornate_heist") do
+        Citizen.Wait(50)
+    end
+    local ped = PlayerPedId()
+    SetEntityHeading(ped, 297)
+    Citizen.Wait(100)
+
+    local rotx, roty, rotz = table.unpack(vec3(GetEntityRotation(PlayerPedId())))
+    local bagscene = NetworkCreateSynchronisedScene(157.82 + 0.25, -225.63, 59.67, rotx, roty, rotz + 297, 2, false, false, 1065353216, 0, 1.3)
+    local bag = CreateObject(GetHashKey("hei_p_m_bag_var22_arm_s"), 157.79, -225.67, 59.67, true, true, false)
+
+    SetEntityCollision(bag, false, true)
+    NetworkAddPedToSynchronisedScene(ped, bagscene, "anim@heists@ornate_bank@thermal_charge", "thermal_charge", 1.2, -4.0, 1, 16, 1148846080, 0)
+    NetworkAddEntityToSynchronisedScene(bag, bagscene, "anim@heists@ornate_bank@thermal_charge", "bag_thermal_charge", 4.0, -8.0, 1)
+    SetPedComponentVariation(ped, 5, 0, 0, 0)
+    NetworkStartSynchronisedScene(bagscene)
+    Citizen.Wait(1500)
+    local x, y, z = table.unpack(GetEntityCoords(ped))
+    print("x = " .. x .. "\ny = " .. y .. "\nz = " .. z)
+    local bomb = CreateObject(GetHashKey("hei_prop_heist_thermite"), x, y, z + 0.3, true, true, true)
+
+    SetEntityCollision(bomb, false, true)
+    AttachEntityToEntity(bomb, ped, GetPedBoneIndex(ped, 28422), 0, 0, 0, 0, 0, 200.0, true, true, false, true, 1, true)
+    Citizen.Wait(2000)
+    DeleteObject(bag)
+    SetPedComponentVariation(ped, 5, 45, 0, 0)
+    DetachEntity(bomb, 1, 1)
+    FreezeEntityPosition(bomb, true)
+    TriggerServerEvent("qb-ifruitstore:server:SetThermiteCharge", method)
+    SetPtfxAssetNextCall("scr_ornate_heist")
+    local effect = StartParticleFxLoopedAtCoord("scr_heist_ornate_thermal_burn", ptfx, 0.0, 0.0, 0.0, 1.0, false, false, false, false)
+
+    NetworkStopSynchronisedScene(bagscene)
+    TaskPlayAnim(ped, "anim@heists@ornate_bank@thermal_charge", "cover_eyes_intro", 8.0, 8.0, 1000, 36, 1, 0, 0, 0)
+    TaskPlayAnim(ped, "anim@heists@ornate_bank@thermal_charge", "cover_eyes_loop", 8.0, 8.0, 3000, 49, 1, 0, 0, 0)
+    Citizen.Wait(5000)
+    ClearPedTasks(ped)
+    DeleteObject(bomb)
+    StopParticleFxLooped(effect, 0)
+end
+
 function CreateFire(coords, time)
     for i = 1, math.random(1, 7), 1 do
-        TriggerServerEvent("thermite:StartServerFire", coords, 24, false)
+        TriggerServerEvent("qb-ifruitstore:server:StartThermiteFire", coords, 24, false)
     end
     Wait(time)
-    TriggerServerEvent("thermite:StopFires")
+    TriggerServerEvent("qb-ifruitstore:server:StopThermiteFire")
 end
 
 -- Hack Security Successfully
@@ -200,6 +246,11 @@ function ThermiteFailed()
     QBCore.Functions.Notify("You failed to hack the security system!", "error")
     TriggerServerEvent("QBCore:Server:RemoveItem", "thermite", 1)
     TriggerServerEvent("qb-ifruitstore:server:SetSecurityStatus", "isBusy", false)
+
+    PlaySound(-1, "Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds", 0, 0, 1)
+    local coords = GetEntityCoords(PlayerPedId())
+    local randTime = math.random(10000,15000)
+    CreateFire(coords, randTime)
 end
 
 -- NUI
@@ -262,6 +313,41 @@ RegisterNetEvent('qb-ifruitstore:client:LoadList', function(list)
     Config.Locations = list
 end)
 
+-- Start Thermite fire animation / When Thermite Minigame is successful
+RegisterNetEvent("qb-ifruitstore:client:SetThermiteCharge", function (method)
+    local ptfx
+    RequestNamedPtfxAsset("scr_ornate_heist")
+    while not HasNamedPtfxAssetLoaded("scr_ornate_heist") do
+        Citizen.Wait(1)
+    end
+    ptfx = vector3(157.81 + 0.25, -224.63, 59.60)
+    SetPtfxAssetNextCall("scr_ornate_heist")
+    local effect = StartParticleFxLoopedAtCoord("scr_heist_ornate_thermal_burn", ptfx, 0.0, 0.0, 0.0, 1.0, false, false, false, false)
+    Citizen.Wait(5000)
+    StopParticleFxLooped(effect, 0)
+end)
+
+-- Start fire animation for Thermite usage / When Thermite Minigame is unsuccessful
+RegisterNetEvent("qb-ifruitstore:client:StartThermiteFire", function (coords, maxChildren, isGasFire)
+    if #(vector3(coords.x, coords.y, coords.z) - GetEntityCoords(PlayerPedId())) < 100 then
+        local pos = {
+            x = coords.x,
+            y = coords.y,
+            z = coords.z
+        }
+        pos.z = pos.z - 0.9
+        local fire = StartScriptFire(pos.x, pos.y, pos.z, maxChildren, isGasFire)
+        currentFires[#currentFires+1] = fire
+    end
+end)
+
+-- Stop fire animation
+RegisterNetEvent("qb-ifruitstore:client:StopThermiteFire", function ()
+    for _, v in ipairs(currentFires) do
+        RemoveScriptFire(v)
+    end
+end)
+
 -- Use Thermite on The Security System on the roof
 RegisterNetEvent('thermite:UseThermite', function()
     if QBCore ~= nil and LocalPlayer.state["isLoggedIn"] then
@@ -279,9 +365,12 @@ RegisterNetEvent('thermite:UseThermite', function()
                                 TriggerEvent("inventory:client:requiredItems", requiredItems, false)
                                 TriggerServerEvent("qb-ifruitstore:server:SetSecurityStatus", "isBusy", true)
                                 exports["memorygame"]:thermiteminigame(Config.CorrectBlocks, Config.IncorrectBlocks, Config.TimeToShow, Config.TimeToLose, function ()
+                                    -- Success
+                                    ThermiteAnimation()
                                     ThermiteSuccess()
                                     TriggerServerEvent("qb-ifruitstore:server:PoliceAlertMessage3")
                                 end, function ()
+                                    -- Failed
                                     ThermiteFailed()
                                     TriggerServerEvent("qb-ifruitstore:server:PoliceAlertMessage2")
                                 end)

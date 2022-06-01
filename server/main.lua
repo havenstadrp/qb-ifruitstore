@@ -20,6 +20,22 @@ RegisterNetEvent('qb-ifruitstore:server:setSpotState', function(stateType, state
     TriggerClientEvent('qb-ifruitstore:client:setSpotState', -1, stateType, state, spot)
 end)
 
+-- Start fire animation for Thermite usage
+RegisterNetEvent("qb-ifruitstore:server:StartThermiteFire", function (coords, maxChildren, isGasFire)
+    local src = source
+    local ped = GetPlayerPed(src)
+    local coordsPed = GetEntityCoords(ped)
+    local thermiteCoords = vector3(Config.Locations["thermite"].x, Config.Locations["thermite"].y, Config.Locations["thermite"].z)
+    if #(coordsPed - thermiteCoords) < 10 then
+        TriggerClientEvent("qb-ifruitstore:client:StartThermiteFire", -1, coords, maxChildren, isGasFire)
+    end
+end)
+
+-- Stop fire animation
+RegisterNetEvent("qb-ifruitstore:server:StopThermiteFire", function ()
+    TriggerClientEvent("qb-ifruitstore:client:StopThermiteFire", -1)
+end)
+
 RegisterNetEvent('qb-ifruitstore:server:SafeReward', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
@@ -53,6 +69,10 @@ RegisterNetEvent('qb-ifruitstore:server:itemReward', function(spot)
     else
         TriggerClientEvent('QBCore:Notify', src, 'You have to much in your pocket ..', 'error')
     end
+end)
+
+RegisterServerEvent("qb-ifruitstore:server:SetThermiteCharge", function (method)
+    TriggerClientEvent("qb-ifruitstore:client:SetThermiteCharge", -1, method)
 end)
 
 RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage1")
