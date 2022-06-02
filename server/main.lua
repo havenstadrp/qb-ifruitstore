@@ -77,27 +77,32 @@ end)
 
 RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage1")
 AddEventHandler("qb-ifruitstore:server:PoliceAlertMessage1", function ()
-    local data = {displayCode = "10-11A", description = "iFruit Robbery", isImportant = 1,
-        recipientList = {"police"}, length = "10000", infoM = "fas fa-mobile", info = "iFruit Store Robbery On Going..", blipSprite = 619, blipColour = 50, blipScale = 1.0}
-    local dispatchData = {dispatchData = data, caller = "Alarm", coords = vector3(Config.Locations["main"].x, Config.Locations["main"].y, Config.Locations["main"].z)}
-    TriggerEvent("wf-alerts:svNotify", dispatchData)
+    exports['ps-dispatch']:IFruitStoreRobbery()
 end)
 
-RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage2")
-AddEventHandler("qb-ifruitstore:server:PoliceAlertMessage2", function ()
-    local data = {displayCode = "10-11B", description = "Power Box Tampering", isImportant = 0,
-        recipientList = {"police"}, length = "5000", infoM = "fas fa-bolt", info = "Someone is tamptering with the iFruit Store Power Box..", blipSprite = 769, blipColour = 66, blipScale = 0.7}
-    local dispatchData = {dispatchData = data, caller = "Local", coords = vector3(Config.Locations["main"].x, Config.Locations["main"].y, Config.Locations["main"].z)}
-    TriggerEvent("wf-alerts:svNotify", dispatchData)
-end)
+-- RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage1")
+-- AddEventHandler("qb-ifruitstore:server:PoliceAlertMessage1", function ()
+--     local data = {displayCode = "10-11A", description = "iFruit Robbery", isImportant = 1,
+--         recipientList = {"police"}, length = "10000", infoM = "fas fa-mobile", info = "iFruit Store Robbery On Going..", blipSprite = 619, blipColour = 50, blipScale = 1.0}
+--     local dispatchData = {dispatchData = data, caller = "Alarm", coords = vector3(Config.Locations["main"].x, Config.Locations["main"].y, Config.Locations["main"].z)}
+--     TriggerEvent("wf-alerts:svNotify", dispatchData)
+-- end)
 
-RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage3")
-AddEventHandler("qb-ifruitstore:server:PoliceAlertMessage3", function ()
-    local data = {displayCode = "10-11C", description = "Power Cut", isImportant = 0,
-        recipientList = {"police"}, length = "5000", infoM = "fas fa-bolt", info = "The power has gone out unexpectedly at the iFruit Store", blipSprite = 769, blipColour = 66, blipScale = 0.4}
-    local dispatchData = {dispatchData = data, caller = "Alarm", coords = vector3(Config.Locations["main"].x, Config.Locations["main"].y, Config.Locations["main"].z)}
-    TriggerEvent("wf-alerts:svNotify", dispatchData)
-end)
+-- RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage2")
+-- AddEventHandler("qb-ifruitstore:server:PoliceAlertMessage2", function ()
+--     local data = {displayCode = "10-11B", description = "Power Box Tampering", isImportant = 0,
+--         recipientList = {"police"}, length = "5000", infoM = "fas fa-bolt", info = "Someone is tamptering with the iFruit Store Power Box..", blipSprite = 769, blipColour = 66, blipScale = 0.7}
+--     local dispatchData = {dispatchData = data, caller = "Local", coords = vector3(Config.Locations["main"].x, Config.Locations["main"].y, Config.Locations["main"].z)}
+--     TriggerEvent("wf-alerts:svNotify", dispatchData)
+-- end)
+
+-- RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage3")
+-- AddEventHandler("qb-ifruitstore:server:PoliceAlertMessage3", function ()
+--     local data = {displayCode = "10-11C", description = "Power Cut", isImportant = 0,
+--         recipientList = {"police"}, length = "5000", infoM = "fas fa-bolt", info = "The power has gone out unexpectedly at the iFruit Store", blipSprite = 769, blipColour = 66, blipScale = 0.4}
+--     local dispatchData = {dispatchData = data, caller = "Alarm", coords = vector3(Config.Locations["main"].x, Config.Locations["main"].y, Config.Locations["main"].z)}
+--     TriggerEvent("wf-alerts:svNotify", dispatchData)
+-- end)
 
 -- RegisterNetEvent('qb-ifruitstore:server:callCops', function(streetLabel, coords)
 --     TriggerClientEvent("qb-ifruitstore:client:robberyCall", -1, streetLabel, coords)
