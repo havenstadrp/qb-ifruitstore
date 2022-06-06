@@ -75,9 +75,8 @@ RegisterServerEvent("qb-ifruitstore:server:SetThermiteCharge", function (method)
     TriggerClientEvent("qb-ifruitstore:client:SetThermiteCharge", -1, method)
 end)
 
-RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage1")
-AddEventHandler("qb-ifruitstore:server:PoliceAlertMessage1", function ()
-    exports['ps-dispatch']:IFruitStoreRobbery()
+RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage1", function ()
+    TriggerClientEvent("qb-ifruitstore:client:PoliceAlertMessage1")
 end)
 
 -- RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage1")

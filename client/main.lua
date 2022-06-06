@@ -31,13 +31,6 @@ function lockpickDone(success)
     end
 end
 
--- Alarming the police
-function AlarmThePolice(streetLabel, pos)
-    TriggerServerEvent("qb-ifruitstore:server:callCops", streetLabel, pos)
-    TriggerServerEvent("qb-ifruitstore:server:PoliceAlertMessage1")
-    copsCalled = true
-end
-
 -- Grabbing item from the store
 function GrabItem(spot)
     local pos = GetEntityCoords(PlayerPedId())
@@ -72,12 +65,12 @@ function GrabItem(spot)
             if Config.Locations["thermite"].isDone then
                 -- 30% chance of triggering the alarm
                 if chance <= 30 then
-                    AlarmThePolice(streetLabel, pos)
+                    TriggerServerEvent("qb-ifruitstore:server:PoliceAlertMessage1")
                 end
             else
                 -- 70% chance of triggering the alarm
                 if chance <= 70 then
-                    AlarmThePolice(streetLabel, pos)
+                    TriggerServerEvent("qb-ifruitstore:server:PoliceAlertMessage1")
                 end
             end
         end
@@ -311,6 +304,11 @@ end)
 
 RegisterNetEvent('qb-ifruitstore:client:LoadList', function(list)
     Config.Locations = list
+end)
+
+RegisterNetEvent("qb-ifruitstore:client:PoliceAlertMessage1", function ()
+    exports['ps-dispatch']:IFruitStoreRobbery()
+    copsCalled = true
 end)
 
 -- Start Thermite fire animation / When Thermite Minigame is successful
