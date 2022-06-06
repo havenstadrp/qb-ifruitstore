@@ -75,10 +75,6 @@ RegisterServerEvent("qb-ifruitstore:server:SetThermiteCharge", function (method)
     TriggerClientEvent("qb-ifruitstore:client:SetThermiteCharge", -1, method)
 end)
 
-RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage1", function ()
-    TriggerClientEvent("qb-ifruitstore:client:PoliceAlertMessage1")
-end)
-
 -- RegisterServerEvent("qb-ifruitstore:server:PoliceAlertMessage1")
 -- AddEventHandler("qb-ifruitstore:server:PoliceAlertMessage1", function ()
 --     local data = {displayCode = "10-11A", description = "iFruit Robbery", isImportant = 1,
