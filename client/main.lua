@@ -1,4 +1,5 @@
 -- Constants
+
 local ROBBERY = "robbery"
 local POWEROUTAGE = "poweroutage"
 local POWERBOXEXPLOSION = "powerboxexplosion"
@@ -534,7 +535,7 @@ end)
 --     end
 -- end)
 
--- Thread
+-- Threads
 
 CreateThread(function()
     while true do
