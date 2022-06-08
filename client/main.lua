@@ -1,3 +1,9 @@
+-- Constants
+
+local ROBBERY = "robbery"
+local POWEROUTAGE = "poweroutage"
+local POWERBOXEXPLOSION = "powerboxexplosion"
+
 -- Variables
 
 local QBCore = exports['qb-core']:GetCoreObject()
@@ -32,10 +38,17 @@ function lockpickDone(success)
 end
 
 -- Alarming the police
-function AlarmThePolice(streetLabel, pos)
-    TriggerServerEvent("qb-ifruitstore:server:callCops", streetLabel, pos)
-    TriggerServerEvent("qb-ifruitstore:server:PoliceAlertMessage1")
-    copsCalled = true
+function PoliceAlertMessage(dispatch)
+    if dispatch == "robbery" then
+        exports['ps-dispatch']:IFruitStoreRobbery()
+        copsCalled = true
+    elseif dispatch == "poweroutage" then
+        exports['ps-dispatch']:PowerOutage()
+    elseif dispatch == "powerboxexplosion" then
+        exports['ps-dispatch']:PowerBoxExplosion()
+    else
+        print("Dispatch type isn't recognized! This will be ignored!")
+    end
 end
 
 -- Grabbing item from the store
@@ -72,12 +85,12 @@ function GrabItem(spot)
             if Config.Locations["thermite"].isDone then
                 -- 30% chance of triggering the alarm
                 if chance <= 30 then
-                    AlarmThePolice(streetLabel, pos)
+                    PoliceAlertMessage(ROBBERY)
                 end
             else
                 -- 70% chance of triggering the alarm
                 if chance <= 70 then
-                    AlarmThePolice(streetLabel, pos)
+                    PoliceAlertMessage(ROBBERY)
                 end
             end
         end
@@ -368,11 +381,11 @@ RegisterNetEvent('thermite:UseThermite', function()
                                     -- Success
                                     ThermiteAnimation()
                                     ThermiteSuccess()
-                                    TriggerServerEvent("qb-ifruitstore:server:PoliceAlertMessage3")
+                                    PoliceAlertMessage(POWEROUTAGE)
                                 end, function ()
                                     -- Failed
                                     ThermiteFailed()
-                                    TriggerServerEvent("qb-ifruitstore:server:PoliceAlertMessage2")
+                                    PoliceAlertMessage(POWERBOXEXPLOSION)
                                 end)
                             else
                                 QBCore.Functions.Notify("You don't have the correct equipment!", "error")
@@ -522,7 +535,7 @@ end)
 --     end
 -- end)
 
--- Thread
+-- Threads
 
 CreateThread(function()
     while true do
