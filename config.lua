@@ -12,6 +12,12 @@ Config.IncorrectBlocks = 2
 Config.TimeToShow = 5
 Config.TimeToLose = 15
 
+-- Set the different chances to steal an item
+Config.ChanceForSamsungPhone = 85
+Config.ChanceForIPhone = 70
+Config.ChanceForTablet = 70
+Config.ChanceForLaptop = 50
+
 Config.Locations = {
     ["main"] = {
         x = 155.0067,
@@ -40,7 +46,7 @@ Config.Locations = {
             z = 54.423,
             isDone = false,
             isBusy = false,
-            reward =  {name = "iphone", amount = 2},
+            reward =  {name = "iphone", amount = 3},
         },
         [3] = {
             x = 150.2673,
@@ -48,7 +54,7 @@ Config.Locations = {
             z = 54.423,
             isDone = false,
             isBusy = false,
-            reward =  {name = "samsungphone", amount = 1},
+            reward =  {name = "samsungphone", amount = 3},
         },
         [4] = {
             x = 157.1467,
@@ -56,7 +62,7 @@ Config.Locations = {
             z = 54.423,
             isDone = false,
             isBusy = false,
-            reward =  {name = "laptop", amount = 1},
+            reward =  {name = "laptop", amount = 2},
         },
         [5] = {
             x = 153.9483,
@@ -64,7 +70,7 @@ Config.Locations = {
             z = 54.423,
             isDone = false,
             isBusy = false,
-            reward =  {name = "laptop", amount = 1},
+            reward =  {name = "laptop", amount = 2},
         },
         [6] = {
             x = 148.6617,
@@ -72,7 +78,7 @@ Config.Locations = {
             z = 54.423,
             isDone = false,
             isBusy = false,
-            reward =  {name = "laptop", amount = 1},
+            reward =  {name = "laptop", amount = 2},
         },
         [7] = {
             x = 145.3898,
@@ -80,7 +86,7 @@ Config.Locations = {
             z = 54.423,
             isDone = false,
             isBusy = false,
-            reward =  {name = "laptop", amount = 1},
+            reward =  {name = "laptop", amount = 2},
         },
         [8] = {
             x = 157.7198,
@@ -88,7 +94,7 @@ Config.Locations = {
             z = 54.423,
             isDone = false,
             isBusy = false,
-            reward =  {name = "laptop", amount = 1}, -- This is for the headphones ("laptop" needs to be changed to "headphones")
+            reward =  {name = "laptop", amount = 2}, -- This is for the headphones ("laptop" needs to be changed to "headphones")
         },
     },
     -- ["safe"] = {

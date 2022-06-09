@@ -77,7 +77,7 @@ function GrabItem(spot)
                 streetLabel = streetLabel .. " " .. street2
             end
 
-            local chance = math.random(1,100)
+            local chance = math.random(1, 100)
             -- Start debugging
             print(chance)
             -- Stop debugging
@@ -97,55 +97,13 @@ function GrabItem(spot)
         StopAnimTask(PlayerPedId(), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
         TriggerServerEvent("qb-ifruitstore:server:setSpotState", "isDone", true, spot)
         TriggerServerEvent("qb-ifruitstore:server:setSpotState", "isBusy", false, spot)
-        TriggerServerEvent("qb-ifruitstore:server:itemReward", spot)
+        TriggerServerEvent("qb-ifruitstore:server:GiveItemReward", spot)
     end, function ()
         StopAnimTask(PlayerPedId(), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
         TriggerServerEvent("qb-ifruitstore:server:setSpotState", "isBusy", false, spot)
         QBCore.Functions.Notify("Canceled..", "error")
     end)
 end
-
--- function GrabItem(spot)
---     local pos = GetEntityCoords(PlayerPedId())
---     if requiredItemsShowed2 then
---         requiredItemsShowed2 = false
---         TriggerEvent('inventory:client:requiredItems', requiredItems, false)
---     end
---     QBCore.Functions.Progressbar("grab_ifruititem", "Disconnect Item", 10000, false, true, {
---         disableMovement = true,
---         disableCarMovement = true,
---         disableMouse = false,
---         disableCombat = true,
---     }, {
---         animDict = "anim@gangops@facility@servers@",
---         anim = "hotwire",
---         flags = 16,
---     }, {}, {}, function() -- Done
---         if not copsCalled then
--- 			local s1, s2 = GetStreetNameAtCoord(pos.x, pos.y, pos.z)
---             local street1 = GetStreetNameFromHashKey(s1)
---             local street2 = GetStreetNameFromHashKey(s2)
---             local streetLabel = street1
---             if street2 ~= nil then
---                 streetLabel = streetLabel .. " " .. street2
---             end
---             -- if Config.SmallBanks[closestBank]["alarm"] then
---                 TriggerServerEvent("qb-ifruitstore:server:callCops", streetLabel, pos)
---                 copsCalled = true
---             -- end
---         end
-
---         StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
---         TriggerServerEvent('qb-ifruitstore:server:setSpotState', "isDone", true, spot)
---         TriggerServerEvent('qb-ifruitstore:server:setSpotState', "isBusy", false, spot)
---         TriggerServerEvent('qb-ifruitstore:server:itemReward', spot)
---         TriggerServerEvent('qb-ifruitstore:server:PoliceAlertMessage', 'People try to steal items at the iFruit Store', pos, true)
---     end, function() -- Cancel
---         StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
---         TriggerServerEvent('qb-ifruitstore:server:setSpotState', "isBusy", false, spot)
---         QBCore.Functions.Notify("Canceled..", "error")
---     end)
--- end
 
 function DrawText3Ds(x, y, z, text)
 	SetTextScale(0.35, 0.35)
@@ -211,7 +169,9 @@ function ThermiteAnimation()
     NetworkStartSynchronisedScene(bagscene)
     Citizen.Wait(1500)
     local x, y, z = table.unpack(GetEntityCoords(ped))
+    -- Start debugging
     print("x = " .. x .. "\ny = " .. y .. "\nz = " .. z)
+    -- Stop debugging
     local bomb = CreateObject(GetHashKey("hei_prop_heist_thermite"), x, y, z + 0.3, true, true, true)
 
     SetEntityCollision(bomb, false, true)
