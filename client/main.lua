@@ -389,6 +389,11 @@ end)
 --     end
 -- end)
 
+-- Get Print statements from server-side
+RegisterNetEvent("qb-ifruitstore:client:Debugging", function (statement)
+    print(statement)
+end)
+
 RegisterNetEvent('qb-ifruitstore:client:setSpotState', function(stateType, state, spot)
     if stateType == "isBusy" then
         Config.Locations["takeables"][spot].isBusy = state

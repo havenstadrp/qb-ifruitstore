@@ -76,15 +76,15 @@ RegisterNetEvent("qb-ifruitstore:server:GiveItemReward", function (spot)
 
     local chance = math.random(1, 100)
     -- Start debugging
-    print("You have a chance of: " .. tableOfChances[item.name] .. "%")
-    print("Chance to get item = " .. chance)
+    TriggerClientEvent("qb-ifruitstore:client:Debugging", -1, "You have a chance of: " .. tableOfChances[item.name] .. "%")
+    TriggerClientEvent("qb-ifruitstore:client:Debugging", -1, "Chance to get item = " .. chance)
     -- Stop debugging
     if chance <= tableOfChances[item.name] then
         local randomizedAmount = math.random(1, item.amount)
         -- Start debugging
-        print("Received " .. randomizedAmount .. " items!")
+        TriggerClientEvent("qb-ifruitstore:client:Debugging", -1, "Received " .. randomizedAmount .. " items!")
         -- Stop debugging
-        if Player.Functions.AddItem(item.name, randomizedAmount) then
+        if player.Functions.AddItem(item.name, randomizedAmount) then
             TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.name], 'add')
         else
             TriggerClientEvent('QBCore:Notify', src, "You have to much in your pocket!", 'error')
