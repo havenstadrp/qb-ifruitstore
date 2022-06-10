@@ -85,7 +85,7 @@ RegisterNetEvent("qb-ifruitstore:server:GiveItemReward", function (spot)
         TriggerClientEvent("qb-ifruitstore:client:Debugging", -1, "Received " .. randomizedAmount .. " items!")
         -- Stop debugging
         if player.Functions.AddItem(item.name, randomizedAmount) then
-            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.name], 'add')
+            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.name], 'add', randomizedAmount)
         else
             TriggerClientEvent('QBCore:Notify', src, "You have to much in your pocket!", 'error')
         end
