@@ -4,6 +4,15 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local alarmTriggered = false
 local certificateAmount = 43
 
+-- Tables
+
+local tableOfChances = {
+    ["samsungphone"]    = Config.ChanceForSamsungPhone,
+    ["iphone"]          = Config.ChanceForIPhone,
+    ["tablet"]          = Config.ChanceForTablet,
+    ["laptop"]          = Config.ChanceForLaptop
+}
+
 -- Events
 
 RegisterNetEvent('qb-ifruitstore:server:LoadLocationList', function()
@@ -59,15 +68,29 @@ RegisterNetEvent('qb-ifruitstore:server:SetSafeStatus', function(stateType, stat
     TriggerClientEvent('qb-ifruitstore:client:SetSafeStatus', -1, stateType, state)
 end)
 
-RegisterNetEvent('qb-ifruitstore:server:itemReward', function(spot)
+-- Add item to Player's inventory (if possible)
+RegisterNetEvent("qb-ifruitstore:server:GiveItemReward", function (spot)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local player = QBCore.Functions.GetPlayer(src)
     local item = Config.Locations["takeables"][spot].reward
 
-    if Player.Functions.AddItem(item.name, item.amount) then
-        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.name], 'add')
+    local chance = math.random(1, 100)
+    -- Start debugging
+    TriggerClientEvent("qb-ifruitstore:client:Debugging", -1, "You have a chance of: " .. tableOfChances[item.name] .. "%")
+    TriggerClientEvent("qb-ifruitstore:client:Debugging", -1, "Chance to get item = " .. chance)
+    -- Stop debugging
+    if chance <= tableOfChances[item.name] then
+        local randomizedAmount = math.random(1, item.amount)
+        -- Start debugging
+        TriggerClientEvent("qb-ifruitstore:client:Debugging", -1, "Received " .. randomizedAmount .. " items!")
+        -- Stop debugging
+        if player.Functions.AddItem(item.name, randomizedAmount) then
+            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.name], 'add', randomizedAmount)
+        else
+            TriggerClientEvent('QBCore:Notify', src, "You have to much in your pocket!", 'error')
+        end
     else
-        TriggerClientEvent('QBCore:Notify', src, 'You have to much in your pocket ..', 'error')
+        TriggerClientEvent('QBCore:Notify', src, "You failed to unlink the item!", 'error')
     end
 end)
 
