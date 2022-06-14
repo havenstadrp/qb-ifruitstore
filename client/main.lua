@@ -79,7 +79,7 @@ function GrabItem(spot)
 
             local chance = math.random(1, 100)
             -- Start debugging
-            if Config.CheckForDebug then
+            if Config.Debug then
                 print(chance)
             end
             -- Stop debugging
@@ -172,7 +172,7 @@ function ThermiteAnimation()
     Citizen.Wait(1500)
     local x, y, z = table.unpack(GetEntityCoords(ped))
     -- Start debugging
-    if Config.CheckForDebug then
+    if Config.Debug then
         print("x = " .. x .. "\ny = " .. y .. "\nz = " .. z)
     end
     -- Stop debugging

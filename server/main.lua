@@ -76,7 +76,7 @@ RegisterNetEvent("qb-ifruitstore:server:GiveItemReward", function (spot)
 
     local chance = math.random(1, 100)
     -- Start debugging
-    if Config.CheckForDebug then
+    if Config.Debug then
         TriggerClientEvent("qb-ifruitstore:client:Debugging", -1, "You have a chance of: " .. tableOfChances[item.name] .. "%")
         TriggerClientEvent("qb-ifruitstore:client:Debugging", -1, "Chance to get item = " .. chance) 
     end
@@ -84,7 +84,7 @@ RegisterNetEvent("qb-ifruitstore:server:GiveItemReward", function (spot)
     if chance <= tableOfChances[item.name] then
         local randomizedAmount = math.random(1, item.amount)
         -- Start debugging
-        if Config.CheckForDebug then
+        if Config.Debug then
             TriggerClientEvent("qb-ifruitstore:client:Debugging", -1, "Received " .. randomizedAmount .. " items!")
         end
         -- Stop debugging
