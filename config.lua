@@ -1,5 +1,8 @@
 Config = {}
 
+-- Enable or Disable the debug option
+Config.Debug = true
+
 -- Police required to start the heist
 Config.RequiredCops = 0
 
