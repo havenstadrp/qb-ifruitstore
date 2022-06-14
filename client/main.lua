@@ -79,7 +79,9 @@ function GrabItem(spot)
 
             local chance = math.random(1, 100)
             -- Start debugging
-            print(chance)
+            if Config.CheckForDebug then
+                print(chance)
+            end
             -- Stop debugging
 
             if Config.Locations["thermite"].isDone then
@@ -170,7 +172,9 @@ function ThermiteAnimation()
     Citizen.Wait(1500)
     local x, y, z = table.unpack(GetEntityCoords(ped))
     -- Start debugging
-    print("x = " .. x .. "\ny = " .. y .. "\nz = " .. z)
+    if Config.CheckForDebug then
+        print("x = " .. x .. "\ny = " .. y .. "\nz = " .. z)
+    end
     -- Stop debugging
     local bomb = CreateObject(GetHashKey("hei_prop_heist_thermite"), x, y, z + 0.3, true, true, true)
 
